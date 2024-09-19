@@ -7,13 +7,13 @@
 #include <map>
 
 class Lexer {
-    std::ifstream fin;
+    
     std::ofstream fout;
     std::string filename;
     char CurChar;
     int linenum;
 
-    void nextChar();
+    
     Token getId();
     Token getNum();
     Token getOp();
@@ -22,6 +22,9 @@ class Lexer {
     
 
 public:
+    std::ifstream fin;
+    size_t fppos;
+    void nextChar();
     Lexer(const std::string& fn);
     Token getToken();
     ~Lexer();

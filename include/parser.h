@@ -7,11 +7,12 @@ class Parser{
     std::ofstream fout;
     Token CurTok;
 
+    
+public:
     Parser(const std::string& fn);
     ~Parser();
-public:
     void nextToken();
-
+    void parseProg();
     void parseTopLevel();
     void parseTopLetDecl();
     void parseTopLevelFnDecl();
