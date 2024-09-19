@@ -7,6 +7,7 @@ Lexer::Lexer(const std::string& fn)
     if (!fin.is_open()){
         std::cout << "Opening file failed! Please try again!"<<'\n';
     }
+    fppos = fin.tellg();
     nextChar();
 }
 
@@ -18,6 +19,7 @@ Lexer::~Lexer(){
 
 void Lexer::nextChar(){
     CurChar = fin.get();
+    fppos++;
 }
 Token Lexer::getId(){
     std::string res{""};
@@ -72,7 +74,8 @@ Token Lexer::getOp(){
                 nextChar();
                 return Token(TokenType::ARROW,op,linenum);
             }
-            fin.unget();  //回溯
+            fppos--;
+            fin.seekg(fppos);  //回溯
             nextChar();
             return Token(TokenType::SUB,op,linenum);
         case '*': 
@@ -88,7 +91,8 @@ Token Lexer::getOp(){
                 nextChar();
                 return Token(TokenType::EQ,op,linenum);
             }
-            fin.unget();  //回溯
+            fppos--;
+            fin.seekg(fppos);  //回溯
             nextChar();
             return Token(TokenType::ASSIGN,op,linenum);
         case '<': //官方给的Tokens并没有'<'，这里回溯是为了返回类型为UNKNOWN的Token，方便提示和报错
@@ -98,7 +102,8 @@ Token Lexer::getOp(){
                 nextChar();
                 return Token(TokenType::LE,op,linenum);
             }
-            fin.unget();  //回溯
+            fppos--;
+            fin.seekg(fppos);  //回溯
             nextChar();
             return Token(TokenType::UNKNOWN,op,linenum);
         case '.': 
